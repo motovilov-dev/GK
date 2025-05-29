@@ -1,0 +1,30 @@
+[project]
+name = "golden-key"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.12.0"
+dependencies = [
+    "aiogram>=3.20.0.post0",
+    "aiohttp>=3.11.18",
+    "alembic>=1.16.1",
+    "chromadb>=1.0.9",
+    "datamodel-code-generator>=0.30.1",
+    "email-validator>=2.2.0",
+    "fastapi>=0.115.9",
+    "fastapi-forge>=0.2.2",
+    "httpx>=0.28.1",
+    "llama-index>=0.12.37",
+    "llama-index-storage-chat-store-postgres>=0.2.1",
+    "llama-index-tools-database>=0.3.0",
+    "llama-index-vector-stores-chroma>=0.4.1",
+    "loguru>=0.7.3",
+    "pydantic-settings>=2.9.1",
+    "pygame>=2.6.1",
+    "pyjwt>=2.10.1",
+    "python-dotenv>=1.1.0",
+    "python-multipart>=0.0.20",
+    "sentry-sdk>=2.24.1",
+    "sqlalchemy>=2.0.41",
+    "uvicorn>=0.34.2",
+]
