@@ -35,6 +35,10 @@ async def main_halls(call: CallbackQuery, state: FSMContext, data) -> None:
         else:
             city_gk_id = data.get('city_gk_id')
             current_index = data.get('current_hall_index', 0)
+        try:
+            city_gk_id = int(call.data.split(':')[3])
+        except Exception as e:
+            pass
 
         async with AsyncSessionFactory() as session:
             halls_repository = HallsRepository(session)

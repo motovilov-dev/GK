@@ -46,23 +46,24 @@ async def main_services(call: CallbackQuery, state: FSMContext, data) -> None:
                 reply_markup=get_services_carousel_keyboard(promo_services, current_index, promo_services[current_index].id)
             )
     elif query in ['spend']:
-        service_id = call.data.split(':')[2]
-        promo_service = None
+        service_id = int(call.data.split(':')[2])
         if gk_user.passes_amount <= 0:
             return await call.answer('Недостаточно проходов для обмена', show_alert=True)
-        for serv in promo_services:
-            if serv.id == service_id:
-                promo_service = serv
+        promo_service = next((item for item in promo_services if item.id == service_id), None)
         if not promo_service:
             return await call.answer('Промокод не найден')
-        async with AsyncAPIClient(token=user.gk_user.token) as client:
+        async with AsyncAPIClient(token=gk_user.token) as client:
             try: 
                 result = await client.exchange_visit(promo_service.code)
+                print(result)
             except Exception as e:
                 logger.warning(f'Ошибка при обмене на промокод | {e}')
                 return await call.answer('Ошибка обмена')
-        return await call.answer('Успешно! Промокод уже отправлен вам на почту!')
+        await call.message.edit_reply_markup(reply_markup=None)
+        await call.message.answer('Успешно! Промокод уже отправлен вам на почту!', reply_markup=back_profile())
+        return await call.answer('Успешно! Промокод уже отправлен вам на почту!', show_alert=True)
 
-            
-        
-        
+
+
+
+

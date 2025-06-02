@@ -13,10 +13,14 @@ from utils.clients.GK_ApiClient import AsyncAPIClient
 from loguru import logger
 
 
-async def update_gk_user(user: User):
-    async with AsyncAPIClient(token=user.gk_user.token) as client:
-        gk_user = await client.get_me()
-        gk_user = gk_user.data
+async def update_gk_user(user: User, token: str):
+    try:
+        async with AsyncAPIClient(token=token) as client:
+            gk_user = await client.get_me()
+            gk_user = gk_user.data
+    except Exception as e:
+        logger.error(f"update_gk_user: {e}")
+        return None
     async with AsyncSessionFactory() as session:
         gk_repo = GkUserRepository(session=session)
 
@@ -73,15 +77,16 @@ class GkAuthMiddleware(BaseMiddleware):
                     )
                 if not user.gk_user:
                     data['gk_auth'] = False
+                    print(f"Пользователь {user_id} не зарегистрирован в gk")
                 else:
-                    gk_user = await update_gk_user(user)
+                    print(f"Пользователь {user_id} зарегистрирован в gk")
+                    gk_user = await update_gk_user(user, user.gk_user.token)
+                    print(f"Пользователь {user_id} обновлен в gk")
                     data['gk_auth'] = True
                     data['gk_user'] = gk_user
-                
-                
                 return await handler(event, data)
         except Exception as e:
             # Логируем ошибку и пропускаем запрос дальше
-            logger.info(f"Ошибка при проверке пользователя: {e}")
+            logger.info(f"Ошибка при проверке пользователя gk: {e}")
             data['is_reg'] = False
             return await handler(event, data)

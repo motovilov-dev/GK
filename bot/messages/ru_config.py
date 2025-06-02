@@ -79,3 +79,26 @@ class RussianMessages(BaseMessageModel):
 <i>Проход создан <b>{created_at}</b></i>
 ━━━━━━━━━━━━━━
 '''
+    orders_main: str = '''
+<b>📅 Ваши заказы</b>    
+{orders}
+'''
+    order: str = '''
+<b>📍 Заказ №{order_id}</b>
+<b>Статус:</b> <code>{status}</code>
+<b>Визитов:</b> <code>{passes_amount}</code>
+━━━━━━━━━━━━━━
+<b>Цена:</b> <code>{amount} руб.</code>
+'''
+    promo: str = '''
+<b>🎁 Промокоды</b>
+{promos}
+'''
+    promo_code: str = '''
+<b>🎁 Промокод</b>
+<b>Код:</b> <code>{code}</code>
+<b>Сервис:</b> <code>{service_name}</code>
+<b>Статус:</b> <code>{status}</code>
+━━━━━━━━━━━━━━
+<i><b>Создан:</b> <code>{created_at}</code></i>
+'''

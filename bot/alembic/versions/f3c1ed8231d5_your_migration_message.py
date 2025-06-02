@@ -1,8 +1,8 @@
-"""GK_base
+"""Your migration message
 
-Revision ID: 3c49c4652994
+Revision ID: f3c1ed8231d5
 Revises: 
-Create Date: 2025-05-24 15:08:26.078472
+Create Date: 2025-06-02 21:34:02.512992
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '3c49c4652994'
+revision: str = 'f3c1ed8231d5'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -31,36 +31,17 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('uuid')
     )
     op.create_index(op.f('ix_cities_code'), 'cities', ['code'], unique=False)
-    op.create_index(op.f('ix_cities_gk_id'), 'cities', ['gk_id'], unique=True)
+    op.create_index(op.f('ix_cities_gk_id'), 'cities', ['gk_id'], unique=False)
     op.create_index(op.f('ix_cities_name'), 'cities', ['name'], unique=False)
     op.create_index(op.f('ix_cities_uuid'), 'cities', ['uuid'], unique=True)
-    op.create_table('gk_users',
-    sa.Column('uuid', sa.UUID(as_uuid=False), nullable=False),
-    sa.Column('name', sa.String(), nullable=True),
-    sa.Column('first_name', sa.String(), nullable=True),
-    sa.Column('last_name', sa.String(), nullable=True),
-    sa.Column('email', sa.String(), nullable=True),
-    sa.Column('phone', sa.String(), nullable=True),
-    sa.Column('role', sa.Integer(), nullable=True),
-    sa.Column('sber_id', sa.String(), nullable=True),
-    sa.Column('gazprom_id', sa.String(), nullable=True),
-    sa.Column('aeroflot_id', sa.String(), nullable=True),
-    sa.Column('card_id', sa.String(), nullable=True),
-    sa.Column('passes_amount', sa.Integer(), nullable=False),
-    sa.Column('user_qr', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.PrimaryKeyConstraint('uuid')
-    )
-    op.create_index(op.f('ix_gk_users_uuid'), 'gk_users', ['uuid'], unique=True)
     op.create_table('products',
     sa.Column('uuid', sa.UUID(as_uuid=False), nullable=False),
     sa.Column('gk_id', sa.BigInteger(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('price', sa.Integer(), nullable=False),
-    sa.Column('prefix', sa.String(), nullable=False),
-    sa.Column('display', sa.Integer(), nullable=False),
-    sa.Column('count', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('price', sa.Integer(), nullable=True),
+    sa.Column('prefix', sa.String(), nullable=True),
+    sa.Column('display', sa.Integer(), nullable=True),
+    sa.Column('count', sa.Integer(), nullable=True),
     sa.Column('foreign', sa.Boolean(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
@@ -68,7 +49,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_products_count'), 'products', ['count'], unique=False)
     op.create_index(op.f('ix_products_display'), 'products', ['display'], unique=False)
-    op.create_index(op.f('ix_products_gk_id'), 'products', ['gk_id'], unique=True)
+    op.create_index(op.f('ix_products_gk_id'), 'products', ['gk_id'], unique=False)
     op.create_index(op.f('ix_products_name'), 'products', ['name'], unique=False)
     op.create_index(op.f('ix_products_prefix'), 'products', ['prefix'], unique=False)
     op.create_index(op.f('ix_products_price'), 'products', ['price'], unique=False)
@@ -76,11 +57,11 @@ def upgrade() -> None:
     op.create_table('promo_services',
     sa.Column('uuid', sa.UUID(as_uuid=False), nullable=False),
     sa.Column('gk_id', sa.BigInteger(), nullable=False),
-    sa.Column('active', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('code', sa.String(), nullable=False),
-    sa.Column('denomination', sa.String(), nullable=False),
-    sa.Column('description', sa.String(), nullable=False),
+    sa.Column('active', sa.Integer(), nullable=True),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('code', sa.String(), nullable=True),
+    sa.Column('denomination', sa.String(), nullable=True),
+    sa.Column('description', sa.String(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('uuid')
@@ -88,7 +69,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_promo_services_code'), 'promo_services', ['code'], unique=False)
     op.create_index(op.f('ix_promo_services_denomination'), 'promo_services', ['denomination'], unique=False)
     op.create_index(op.f('ix_promo_services_description'), 'promo_services', ['description'], unique=False)
-    op.create_index(op.f('ix_promo_services_gk_id'), 'promo_services', ['gk_id'], unique=True)
+    op.create_index(op.f('ix_promo_services_gk_id'), 'promo_services', ['gk_id'], unique=False)
     op.create_index(op.f('ix_promo_services_name'), 'promo_services', ['name'], unique=False)
     op.create_index(op.f('ix_promo_services_uuid'), 'promo_services', ['uuid'], unique=True)
     op.create_table('users',
@@ -107,6 +88,32 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_users_telegram_id'), 'users', ['telegram_id'], unique=True)
     op.create_index(op.f('ix_users_uuid'), 'users', ['uuid'], unique=True)
+    op.create_table('gk_users',
+    sa.Column('uuid', sa.UUID(as_uuid=False), nullable=False),
+    sa.Column('user_uuid', sa.UUID(as_uuid=False), nullable=False),
+    sa.Column('gk_user_id', sa.BigInteger(), nullable=False),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('first_name', sa.String(), nullable=True),
+    sa.Column('last_name', sa.String(), nullable=True),
+    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('phone', sa.String(), nullable=True),
+    sa.Column('password', sa.String(), nullable=True),
+    sa.Column('token', sa.String(), nullable=True),
+    sa.Column('role', sa.Integer(), nullable=True),
+    sa.Column('sber_id', sa.String(), nullable=True),
+    sa.Column('gazprom_id', sa.String(), nullable=True),
+    sa.Column('aeroflot_id', sa.String(), nullable=True),
+    sa.Column('card_id', sa.String(), nullable=True),
+    sa.Column('passes_amount', sa.Integer(), nullable=False),
+    sa.Column('user_qr', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['user_uuid'], ['users.uuid'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('uuid')
+    )
+    op.create_index(op.f('ix_gk_users_gk_user_id'), 'gk_users', ['gk_user_id'], unique=True)
+    op.create_index(op.f('ix_gk_users_user_uuid'), 'gk_users', ['user_uuid'], unique=True)
+    op.create_index(op.f('ix_gk_users_uuid'), 'gk_users', ['uuid'], unique=True)
     op.create_table('halls',
     sa.Column('uuid', sa.UUID(as_uuid=False), nullable=False),
     sa.Column('gk_id', sa.BigInteger(), nullable=False),
@@ -145,7 +152,7 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['hall_uuid'], ['halls.uuid'], ),
     sa.PrimaryKeyConstraint('uuid')
     )
-    op.create_index(op.f('ix_medias_gk_id'), 'medias', ['gk_id'], unique=True)
+    op.create_index(op.f('ix_medias_gk_id'), 'medias', ['gk_id'], unique=False)
     op.create_index(op.f('ix_medias_hall_gk_id'), 'medias', ['hall_gk_id'], unique=False)
     op.create_index(op.f('ix_medias_hall_uuid'), 'medias', ['hall_uuid'], unique=False)
     op.create_index(op.f('ix_medias_url'), 'medias', ['url'], unique=False)
@@ -155,16 +162,16 @@ def upgrade() -> None:
     sa.Column('hall_uuid', sa.UUID(as_uuid=False), nullable=False),
     sa.Column('gk_id', sa.BigInteger(), nullable=False),
     sa.Column('hall_gk_id', sa.BigInteger(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('text', sa.String(), nullable=False),
-    sa.Column('icon_url', sa.String(), nullable=False),
-    sa.Column('service_type', sa.String(), nullable=False),
-    sa.Column('content', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('text', sa.String(), nullable=True),
+    sa.Column('icon_url', sa.String(), nullable=True),
+    sa.Column('service_type', sa.String(), nullable=True),
+    sa.Column('content', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.ForeignKeyConstraint(['hall_uuid'], ['halls.uuid'], ),
     sa.PrimaryKeyConstraint('uuid')
     )
     op.create_index(op.f('ix_services_content'), 'services', ['content'], unique=False)
-    op.create_index(op.f('ix_services_gk_id'), 'services', ['gk_id'], unique=True)
+    op.create_index(op.f('ix_services_gk_id'), 'services', ['gk_id'], unique=False)
     op.create_index(op.f('ix_services_hall_gk_id'), 'services', ['hall_gk_id'], unique=False)
     op.create_index(op.f('ix_services_hall_uuid'), 'services', ['hall_uuid'], unique=False)
     op.create_index(op.f('ix_services_icon_url'), 'services', ['icon_url'], unique=False)
@@ -206,6 +213,10 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_halls_city'), table_name='halls')
     op.drop_index(op.f('ix_halls_admin_name'), table_name='halls')
     op.drop_table('halls')
+    op.drop_index(op.f('ix_gk_users_uuid'), table_name='gk_users')
+    op.drop_index(op.f('ix_gk_users_user_uuid'), table_name='gk_users')
+    op.drop_index(op.f('ix_gk_users_gk_user_id'), table_name='gk_users')
+    op.drop_table('gk_users')
     op.drop_index(op.f('ix_users_uuid'), table_name='users')
     op.drop_index(op.f('ix_users_telegram_id'), table_name='users')
     op.drop_table('users')
@@ -224,8 +235,6 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_products_display'), table_name='products')
     op.drop_index(op.f('ix_products_count'), table_name='products')
     op.drop_table('products')
-    op.drop_index(op.f('ix_gk_users_uuid'), table_name='gk_users')
-    op.drop_table('gk_users')
     op.drop_index(op.f('ix_cities_uuid'), table_name='cities')
     op.drop_index(op.f('ix_cities_name'), table_name='cities')
     op.drop_index(op.f('ix_cities_gk_id'), table_name='cities')

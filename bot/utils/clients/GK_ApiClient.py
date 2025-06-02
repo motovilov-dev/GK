@@ -6,6 +6,8 @@ from .types.auth import AuthResponse
 from .types.user import UserInfoResponse
 from .types.services import RewardResponse
 from .types.passes import PassesResponse
+from .types.orders import OrdersResponse
+from .types.promo import PromoResponse
 
 
 class AsyncAPIClient:
@@ -15,7 +17,7 @@ class AsyncAPIClient:
     
     def __init__(
         self,
-        base_url: str = 'http://api.dev.goldenkey.world/',
+        base_url: str = 'http://api.dev.goldenkey.world',
         timeout: int = 10,
         token: str = None,
         headers: Optional[Dict[str, str]] = None,
@@ -32,7 +34,7 @@ class AsyncAPIClient:
         self.token = token
         self._base_url = base_url.rstrip('/')
         self._timeout = timeout
-        self._headers = headers or {}
+        self._headers = headers or {'Content-Type': 'application/json'}
         self._session = session
         self._own_session = session is None
         
@@ -83,7 +85,7 @@ class AsyncAPIClient:
         
         async with session.request(
             method=method,
-            url=endpoint.lstrip('/'),
+            url=endpoint,
             params=params,
             json=json,
             headers=request_headers
@@ -129,7 +131,7 @@ class AsyncAPIClient:
         Возвращает:
         - AuthResponse с токеном и ID пользователя
         """
-        result = AuthResponse(**await self._request(
+        result = await self._request(
             'POST',
             '/api/login',
             json={
@@ -137,37 +139,41 @@ class AsyncAPIClient:
                 "password": password,
             },
             **kwargs
-        ))
-        self.token = result.token
-        return result
+        )
+        self.token = result.get('token')
+        return AuthResponse(**result)
 
     async def get_me(self, token=None, **kwargs) -> UserInfoResponse:
         """GET запрос"""
-        return UserInfoResponse(**await self._request(
+        if token:
+            self.token = token
+        result = await self._request(
             'GET',
-            '/api/cabinet/user-info',
-            headers={'Authorization': f'Bearer {self.token if not token else token}'},
-            **kwargs
-        ))
+            '/api/cabinet/user-info/',
+            headers={'Authorization': f'Bearer {self.token}', 'Content-Type': 'application/json'}
+        )
+        return UserInfoResponse(**result)
 
     async def get_promo_services(self, **kwargs) -> RewardResponse:
         """GET запрос"""
-        return RewardResponse(**await self._request(
-            'GET', 
+        result = await self._request(
+            'GET',
             '/api/cabinet/promo-services',
             headers={'Authorization': f'Bearer {self.token}'},
             **kwargs
-        ))
+        )
+        return RewardResponse(**result)
 
     async def get_passes(self, limit: int = 30, offset: int = 0, **kwargs) -> Any:
         """GET запрос"""
-        return PassesResponse(**await self._request(
+        result = await self._request(
             'GET',
             f'/api/cabinet/passes?limit={limit}&offset={offset}',
             headers={'Authorization': f'Bearer {self.token}'},
             **kwargs
-        ))
-    
+        )
+        return PassesResponse(**result)
+
     async def get_bakns(self) -> Any:
         """GET запрос"""
         return await self._request(
@@ -181,9 +187,9 @@ class AsyncAPIClient:
                          email: str, 
                          quantity: int = 1,
                          installments:bool = False, 
-                         mobile:bool = True, 
-                         promocode:str = None, 
-                         pay_by_act: str = None
+                         mobile:bool = False,
+                         promocode:str = '',
+                         pay_by_act: str = False
                          ) -> Any:
         """POST запрос"""
         result = await self._request(
@@ -258,6 +264,25 @@ class AsyncAPIClient:
             }
         )
         return result
+
+    async def get_orders(self, limit: int = 10, offset: int = 0):
+        """GET запрос"""
+        result = await self._request(
+           'GET',
+            f'api/cabinet/orders?limit={limit}&offset={offset}',
+            headers={'Authorization': f'Bearer {self.token}'}
+        )
+        return OrdersResponse(**result)
+
+    async def get_promo(self):
+        """GET запрос"""
+        result = await self._request(
+            'GET',
+            '/api/cabinet/certificates',
+            headers={'Authorization': f'Bearer {self.token}'}
+        )
+        return PromoResponse(**result)
+
 
 # Пример использования
 # async def main():

@@ -24,10 +24,10 @@ class Config:
     webhook_port: str = getenv('WEBHOOK_PORT', '8080')
 
     # База данных (PostgreSQL)
-    POSTGRES_SERVER: str = "localhost"
-    POSTGRES_USER: str = "default"
+    POSTGRES_SERVER: str = "195.133.27.192"
+    POSTGRES_USER: str = "gen_user"
     POSTGRES_PASSWORD: str = "Alisa220!"
-    POSTGRES_DB: str = "bot_db"
+    POSTGRES_DB: str = "gk_bot"
     POSTGRES_PORT: int = 5432
     SQLALCHEMY_DATABASE_URI: str = f'postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}'
     

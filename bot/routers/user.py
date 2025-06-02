@@ -105,7 +105,7 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
         )
 
 @user_router.callback_query(F.data.contains('passes'))
-async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_passes(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Проходы'
     try:
         await main_passes(callback, state, data)
@@ -145,7 +145,7 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
             phone=gk_user.phone,
             passes_amount=gk_user.passes_amount
         )
-        await callback.message.edit_text(text=text, reply_markup=get_back_keyboard())
+        await callback.message.edit_text(text=text, reply_markup=back_from_profile())
     except Exception as e:
         logger.error(f'Ошибка выдачи профиля | {e}')
         await callback.message.delete()
@@ -153,6 +153,30 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
             msg_text,
             reply_markup=get_back_keyboard(),
         )
+
+
+@user_router.callback_query(F.data.contains('promo'))
+async def cmd_promo(call: CallbackQuery, state: FSMContext, **data):
+    gk_user = data.get('gk_user')
+    async with AsyncAPIClient(token=gk_user.token) as client:
+        try:
+            promo = await client.get_promo()
+        except Exception as e:
+            logger.warning(f'Ошибка получения промо | {e}')
+            await call.answer('Ошибка получения промокодов')
+        if not promo.data.promo:
+            await call.answer('У вас пока нет промокодов', show_alert=True)
+            return
+        promos = ''
+        for item in promo.data.promo:
+            promos += RussianMessages().promo_code.format(
+                code=" | ".join(item.codes),  # Объединяем коды через разделитель
+                service_name=item.promo_service.name,
+                status='Ожидает' if item.status == 'unprocessed' else 'Активирован',
+                created_at=item.created_at.strftime('%Y-%m-%d %H:%M')
+            )
+        await call_replace_answer(call=call, text=RussianMessages().promo.format(promos=promos), reply_markup=get_back_keyboard())
+
 
 @user_router.callback_query(F.data.contains('qr'))
 async def cmd_halls(call: CallbackQuery, state: FSMContext, **data) -> None:
@@ -184,8 +208,22 @@ async def cmd_halls(call: CallbackQuery, state: FSMContext, **data) -> None:
 @user_router.callback_query(F.data.contains('orders'))
 async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Заказы'
+    gk_user = data.get('gk_user')
     try:
-        await callback.answer('У вас пока нет заказов (В разработке)')
+        orders_txt = ''
+        async with AsyncAPIClient(token=gk_user.token) as client:
+            orders = await client.get_orders()
+            if not orders.data:
+                return await callback.answer('У вас пока нет заказов', show_alert=True)
+        for order in orders.data:
+            orders_txt += RussianMessages().order.format(
+                order_id=order.id,
+                status='⏳Ожидает' if order.status == 'pending' else '✅Оплачен' if order.status == 'completed' else '💸В обработке' if order.status == 'processing' else '⚫️Отменен',
+                passes_amount=order.quantity,
+                amount=order.total
+            )
+        await call_replace_answer(callback, RussianMessages().orders_main.format(orders=orders_txt), get_back_keyboard())
+
     except Exception as e:
         logger.error(f'Ошибка выдачи заказов | {e}')
         await callback.message.delete()
@@ -284,32 +322,13 @@ async def handle_text(message: Message, state: FSMContext, **data) -> None:
     result = agent.ask_question(message.text, user_info, str(message.from_user.id))
     print(result)
     try:
-        # Пытаемся распарсить JSON
-        response_data = json.loads(result)
-        
-        # Проверяем соответствие схеме
-        if isinstance(response_data, dict) and "response" in response_data:
-            response = response_data["response"]
-            answer = response.get("answer", "")
-            buttons = response.get("buttons", [])
-            
-            # Если есть кнопки, создаем клавиатуру
-            if buttons:
-                from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-                keyboard = []
-                for button in buttons:
-                    keyboard.append([InlineKeyboardButton(
-                        text=button["text"],
-                        callback_data=button["callback_data"]
-                    )])
-                keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-                await message.answer(answer, reply_markup=keyboard, disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
-            else:
-                await message.answer(answer, disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
+        message_text = result.answer
+        keyboard = []
+        if result.buttons:
+            for button in result.buttons:
+                keyboard.append([InlineKeyboardButton(text=button.text, callback_data=button.callback_data)])
+            await message.answer(message_text, reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
         else:
-            # Если JSON не соответствует схеме, отправляем как есть
-            await message.answer(result, disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
-            
-    except (JSONDecodeError, TypeError):
-        # Если это не JSON, отправляем как текст
-        await message.answer(result, disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
+            await message.answer(message_text)
+    except Exception as e:
+        logger.warning(e)

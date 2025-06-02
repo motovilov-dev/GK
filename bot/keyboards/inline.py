@@ -235,8 +235,38 @@ def get_sessions_keyboard(sessions: List[Pass], current_index: int, hall_id: int
 def get_choose_banks(banks: list, call_prefix: str):
     keyboard = []
     for bank in banks:
-        keyboard.append([InlineKeyboardButton(text=bank, callback_data=call_prefix+bank)])
+        if bank == 'tinkoff_acquiring':
+            keyboard.append([InlineKeyboardButton(text='Оплата картой', callback_data=call_prefix+bank)])
+        if bank == 'sber':
+            keyboard.append([InlineKeyboardButton(text='Бонусы от СберСпасибо', callback_data=call_prefix+bank)])
+        if bank == 'yandex-split':
+            keyboard.append([InlineKeyboardButton(text='Яндекс Пэй | Сразу или частями', callback_data=call_prefix+bank)])
     keyboard.append([InlineKeyboardButton(text='⬅️ Назад', callback_data='back')])
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+def payment_keyboard(url: str):
+    # Создаем кнопку с URL для оплаты
+    keyboard = [
+        [InlineKeyboardButton(text='Оплатить', url=url)],
+        [InlineKeyboardButton(text='Проверить оплату', callback_data='profile')],
+        [InlineKeyboardButton(text='⬅️ Назад', callback_data='back')]
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+def back_profile():
+    keyboard = [
+        [InlineKeyboardButton(text='Мои промокоды', callback_data='promo')],
+        [InlineKeyboardButton(text='⬅️ Назад', callback_data='profile')]
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+def back_from_profile():
+    keyboard = [
+        [InlineKeyboardButton(text='Мои промокоды', callback_data='promo')],
+        [InlineKeyboardButton(text='⬅️ Назад', callback_data='back')]
+    ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 def get_cancel():

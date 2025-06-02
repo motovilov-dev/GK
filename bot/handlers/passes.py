@@ -84,6 +84,7 @@ async def main_passes(call: CallbackQuery, state: FSMContext, data) -> None:
         if not product:
             await call.answer('Проход не найден', show_alert=True)
         bank = call.data.split(':')[3]
+        print('stage1')
         async with AsyncAPIClient(token=gk_user.token) as client:
             try:
                 make_order = await client.make_order(
@@ -91,6 +92,7 @@ async def main_passes(call: CallbackQuery, state: FSMContext, data) -> None:
                     product_id=product_id, 
                     email=gk_user.email
                 )
+                print(make_order)
             except Exception as e:
                 logger.warning(f'Ошибка при создании платежной ссылки | {e}')
                 return await call.message.edit_text('Произошла ошибка, попробуйте позже')
@@ -103,6 +105,6 @@ async def main_passes(call: CallbackQuery, state: FSMContext, data) -> None:
 🎫 Количество проходов: {product.count}
 
 <i>Оплатите покупку</i>
-''', reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton('Оплатить', url=make_order.get('data'))], [InlineKeyboardButton('⬅️ Назад', 'back')]]))
+''', reply_markup=payment_keyboard(make_order.get('data')))
 
         

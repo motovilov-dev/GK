@@ -59,6 +59,6 @@ class AuthMiddleware(BaseMiddleware):
                 return await handler(event, data)
         except Exception as e:
             # Логируем ошибку и пропускаем запрос дальше
-            logger.info(f"Ошибка при проверке пользователя: {e}")
+            logger.info(f"Ошибка при проверке пользователя tg: {e}")
             data['is_reg'] = False
             return await handler(event, data)

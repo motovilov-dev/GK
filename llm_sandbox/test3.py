@@ -1,62 +1,190 @@
-import time
-from sentry_sdk.ai.monitoring import ai_track, record_token_usage
-import sentry_sdk
+import sqlite3
+from typing import List, Dict, Any, Optional
+from langchain_community.utilities.sql_database import SQLDatabase
+from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
+from langchain.chat_models import ChatOpenAI  # Или другой совместимый LLM
+from langchain.agents import AgentExecutor
+from langchain.agents.agent_types import AgentType
+from langchain.memory import ConversationBufferMemory
+from sqlalchemy import create_engine
+from sqlalchemy.pool import StaticPool
 import requests
-from openai import OpenAI
-
-sentry_sdk.init(
-    dsn="https://0262ca3cbbad6fe8b7f84e4f216cb352@sentry-dev.ru.tuna.am/2",
-    send_default_pii=True,
-    traces_sample_rate=1.0,
-    profiles_sample_rate=1.0,
-    _experiments={
-        "enable_logs": True,
-    },
-)
 
 
-@ai_track("AI tool")
-def some_workload_function(**kwargs):
+class GPTNanoSQLAssistant:
     """
-    This function is an example of calling arbitrary code with @ai_track so that it shows up in the Sentry trace
-    """
-    time.sleep(5)
+    Класс для взаимодействия с GPT-4.1-nano через SQL базу данных.
+    Позволяет задавать вопросы на естественном языке и получать ответы на основе данных в БД.
 
-@ai_track("LLM")
-def some_llm_call():
+    Аргументы:
+        db_uri (str): URI для подключения к SQL базе данных
+        llm_model (str): Название модели LLM (по умолчанию 'gpt-4')
+        temperature (float): Параметр температуры для модели (по умолчанию 0)
+        verbose (bool): Режим отладки (по умолчанию False)
     """
-    This function is an example of calling an LLM provider that isn't officially supported by Sentry.
-    """
-    with sentry_sdk.start_span(op="ai.chat_completions.create.examplecom", name="Example.com LLM") as span:
-        result = requests.get('https://example.com/api/llm-chat?question=say+hello').json()
-        # this annotates the tokens used by the LLM so that they show up in the graphs in the dashboard
-        record_token_usage(span, total_tokens=result["usage"]["total_tokens"])
-        return result["text"]
 
-@ai_track("My AI pipeline")
-def some_pipeline():
-    """
-    The topmost level function with @ai_track gets the operation "ai.pipeline", which makes it show up
-    in the table of AI pipelines in the Sentry LLM Monitoring dashboard.
-    """
-    client = OpenAI(
-        model="gpt-4.1-nano", 
-        temperature=0.1, 
-        api_base='https://api.aitunnel.ru/v1/', 
-        api_key='sk-aitunnel-C0Wxd5TZVf96WJwjJHLBWZKcM4SE2URI'
-    )
-    # Data can be passed to the @ai_track annotation to include metadata
-    some_workload_function(sentry_tags={"username": "artem"}, sentry_data={"data": "some longer data that provides context"})
-    some_llm_call()
-    response = (
-        client.chat.completions.create(
-            model="gpt-4.1-nano", messages=[{"role": "system", "content": "say hello"}]
+    def __init__(
+            self,
+            db_uri: str = "sqlite:///:memory:",
+            llm_model: str = "gpt-4.1-nano",
+            temperature: float = 0,
+            verbose: bool = False
+    ):
+        self.db_uri = db_uri
+        self.llm_model = llm_model
+        self.temperature = temperature
+        self.verbose = verbose
+
+        # Инициализация подключения к БД
+        self.db = self._init_db()
+
+        # Инициализация языковой модели
+        self.llm = ChatOpenAI(
+            model=self.llm_model,
+            temperature=self.temperature,
+            openai_api_key='sk-aitunnel-C0Wxd5TZVf96WJwjJHLBWZKcM4SE2URI',
+            openai_api_base='https://api.aitunnel.ru/v1/'
         )
-        .choices[0]
-        .message.content
-    )
-    print(response)
 
-with sentry_sdk.start_transaction(op="ai-inference", name="The result of the AI inference"):
-    some_pipeline()
+        # Инициализация инструментов для работы с SQL
+        self.toolkit = SQLDatabaseToolkit(db=self.db, llm=self.llm)
 
+        # Создание агента для выполнения запросов
+        self.agent_executor = self._create_agent()
+
+    def _init_db(self) -> SQLDatabase:
+        """
+        Инициализирует подключение к SQL базе данных.
+
+        Возвращает:
+            SQLDatabase: Объект для работы с SQL базой данных
+        """
+        if self.db_uri == "sqlite:///:memory:":
+            # Для демонстрации используем in-memory базу Chinook
+            return self._init_chinook_db()
+        else:
+            # Подключение к пользовательской базе данных
+            engine = create_engine(self.db_uri)
+            return SQLDatabase(engine)
+
+    def _init_chinook_db(self) -> SQLDatabase:
+        """
+        Инициализирует демонстрационную базу данных Chinook в памяти.
+
+        Возвращает:
+            SQLDatabase: Объект для работы с SQL базой данных Chinook
+        """
+        # Загрузка скрипта создания базы данных Chinook
+        url = "https://raw.githubusercontent.com/lerocha/chinook-database/master/ChinookDatabase/DataSources/Chinook_Sqlite.sql"
+        response = requests.get(url)
+        sql_script = response.text
+
+        # Создание in-memory SQLite базы
+        connection = sqlite3.connect(":memory:", check_same_thread=False)
+        connection.executescript(sql_script)
+
+        # Создание SQLAlchemy engine
+        engine = create_engine(
+            "sqlite://",
+            creator=lambda: connection,
+            poolclass=StaticPool,
+            connect_args={"check_same_thread": False},
+        )
+
+        return SQLDatabase(engine)
+
+    def _create_agent(self) -> AgentExecutor:
+        """
+        Создает и настраивает агента для выполнения SQL запросов.
+
+        Возвращает:
+            AgentExecutor: Агент для выполнения запросов к базе данных
+        """
+        # Память для хранения контекста разговора
+        memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
+        # Создание агента
+        agent_executor = AgentExecutor.from_agent_and_tools(
+            agent=self.llm,
+            agent_type=AgentType.OPENAI_FUNCTIONS,
+            tools=self.toolkit.get_tools(),
+            llm=self.llm,
+            verbose=self.verbose,
+            memory=memory,
+            handle_parsing_errors=True
+        )
+
+        return agent_executor
+
+    def query(self, question: str) -> str:
+        """
+        Выполняет запрос к базе данных на естественном языке.
+
+        Аргументы:
+            question (str): Вопрос на естественном языке
+
+        Возвращает:
+            str: Ответ на основе данных из базы данных
+        """
+        try:
+            result = self.agent_executor.run(question)
+            return result
+        except Exception as e:
+            return f"Произошла ошибка при выполнении запроса: {str(e)}"
+
+    def get_table_names(self) -> List[str]:
+        """
+        Возвращает список таблиц в базе данных.
+
+        Возвращает:
+            List[str]: Список имен таблиц
+        """
+        return self.db.get_usable_table_names()
+
+    def get_table_schema(self, table_name: str) -> str:
+        """
+        Возвращает схему указанной таблицы.
+
+        Аргументы:
+            table_name (str): Имя таблицы
+
+        Возвращает:
+            str: Схема таблицы в SQL формате
+        """
+        return self.db.get_table_info([table_name])
+
+    def execute_sql(self, sql_query: str) -> List[Dict[str, Any]]:
+        """
+        Выполняет SQL запрос напрямую и возвращает результат.
+
+        Аргументы:
+            sql_query (str): SQL запрос для выполнения
+
+        Возвращает:
+            List[Dict[str, Any]]: Результаты запроса в виде списка словарей
+        """
+        try:
+            result = self.db.run(sql_query)
+            return result
+        except Exception as e:
+            return [{"error": str(e)}]
+
+
+# Пример использования
+if __name__ == "__main__":
+    # Инициализация ассистента с демонстрационной базой данных Chinook
+    assistant = GPTNanoSQLAssistant(verbose=True)
+
+    # Получение списка таблиц
+    print("Доступные таблицы:", assistant.get_table_names())
+
+    # Пример запроса на естественном языке
+    question = "Какие 5 клиентов сделали самые большие покупки?"
+    answer = assistant.query(question)
+    print(f"Вопрос: {question}")
+    print(f"Ответ: {answer}")
+
+    # Пример прямого SQL запроса
+    sql = "SELECT FirstName, LastName FROM Customer LIMIT 3"
+    print(f"\nРезультат SQL запроса '{sql}':")
+    print(assistant.execute_sql(sql))

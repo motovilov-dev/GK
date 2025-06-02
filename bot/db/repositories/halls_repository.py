@@ -3,6 +3,7 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import joinedload
 
 from db.models.gk_base_info import *
 
@@ -30,9 +31,12 @@ class HallsRepository:
         Returns:
             Optional[Hall]: Найденный зал или None
         """
-        query = select(Hall).where(Hall.gk_id == gk_id)
-        result = await self.session.execute(query)
-        return result.scalars().first()
+        result = await self.session.execute(
+            select(Hall)
+            .options(joinedload(Hall.services), joinedload(Hall.media), joinedload(Hall.city_rel))
+            .where(Hall.gk_id == gk_id)
+        )
+        return result.unique().scalar_one_or_none()
 
     async def get_by_city_gk_id(self, city_gk_id: int) -> List[Hall]:
         """

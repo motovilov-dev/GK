@@ -59,15 +59,15 @@ async def reg_phone_handler(message: Message, state: FSMContext, data) -> None:
     phone = message.text
     is_valid, phone = is_valid_phone(phone)
     if not is_valid:
-        return await message.answer('Номер введен неверно, попробуйте еще раз\n\n<i>Подсказка: 79998887766</i>', reply_markup=get_cancel())
+        return await message.answer('Номер введен неверно, попробуйте еще раз\n\n<i>Подсказка: 79998887766</i>', reply_markup=get_back_keyboard())
     async with AsyncAPIClient() as client:
         try:
             send_code = await client.reg_send_code(phone)
         except Exception as e:
             logger.warning(f'Регистрация | Ошибка отправки кода на телефон | {e}')
-            return await message.answer('Номер введен неверно, попробуйте еще раз\n\n<i>Подсказка: 79998887766</i>', reply_markup=get_cancel())
+            return await message.answer('Номер введен неверно, попробуйте еще раз\n\n<i>Подсказка: 79998887766</i>', reply_markup=get_back_keyboard())
     await state.update_data(reg_phone=phone)
-    await message.answer(RussianMessages().reg_stage2, reply_markup=get_cancel())
+    await message.answer(RussianMessages().reg_stage2, reply_markup=get_back_keyboard())
     await state.set_state('register:sms_code')
 
 async def reg_sms_code_handler(message: Message, state: FSMContext, data) -> None:
@@ -76,29 +76,29 @@ async def reg_sms_code_handler(message: Message, state: FSMContext, data) -> Non
     state_data = await state.get_data()
     phone = state_data.get('reg_phone')
     if len(sms_code)!= 4:
-        return await message.answer('Код введен неверно, попробуйте еще раз\n\n<i>Подсказка: xxxx</i>', reply_markup=get_cancel())
+        return await message.answer('Код введен неверно, попробуйте еще раз\n\n<i>Подсказка: xxxx</i>', reply_markup=get_back_keyboard())
     async with AsyncAPIClient() as client:
         try:
             auth = await client.reg_verify_code(phone=phone, code=sms_code)
         except Exception as e:
             logger.warning(f'Ошибка регистрации | {e}')
-            return await message.answer('Неверный код, попробуйте еще раз\n\n<i>Подсказка: xxxx</i>', reply_markup=get_cancel())
+            return await message.answer('Неверный код, попробуйте еще раз\n\n<i>Подсказка: xxxx</i>', reply_markup=get_back_keyboard())
     await state.update_data(reg_sms_code=sms_code)
-    await message.answer(RussianMessages().reg_stage3, reply_markup=get_cancel())
+    await message.answer(RussianMessages().reg_stage3, reply_markup=get_back_keyboard())
     await state.set_state('register:name')
 
 async def reg_name_handler(message: Message, state: FSMContext, data) -> None:
     await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     name = message.text
     await state.update_data(reg_first_name=name)
-    await message.answer(RussianMessages().reg_stage4, reply_markup=get_cancel())
+    await message.answer(RussianMessages().reg_stage4, reply_markup=get_back_keyboard())
     await state.set_state('register:last_name')
 
 async def reg_last_name_handler(message: Message, state: FSMContext, data) -> None:
     await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     last_name = message.text
     await state.update_data(reg_last_name=last_name)
-    await message.answer(RussianMessages().reg_stage5, reply_markup=get_cancel())
+    await message.answer(RussianMessages().reg_stage5, reply_markup=get_back_keyboard())
     await state.set_state('register:email')
 
 async def reg_email_handler(message: Message, state: FSMContext, data) -> None:
@@ -106,17 +106,22 @@ async def reg_email_handler(message: Message, state: FSMContext, data) -> None:
     email = message.text
     is_valid, email = is_valid_email(email)
     if not is_valid:
-        return await message.answer('Email введен неверно, попробуйте еще раз', reply_markup=get_cancel())
+        return await message.answer('Email введен неверно, попробуйте еще раз', reply_markup=get_back_keyboard())
     await state.update_data(reg_email=email)
     state_data = await state.get_data()
     await state.set_state(None)
-    result = await reg_new_gk_user(
-        email=state_data.get('reg_email'),
-        password=state_data.get('reg_sms_code'),
-        first_name=state_data.get('reg_first_name'),
-        last_name=state_data.get('reg_last_name'),
-        user=data.get('user')
-    )
+    try:
+        result = await reg_new_gk_user(
+            phone=state_data.get('reg_phone'),
+            email=state_data.get('reg_email'),
+            first_name=state_data.get('reg_first_name'),
+            last_name=state_data.get('reg_last_name'),
+            user=data.get('user')
+        )
+    except Exception as e:
+        logger.warning(f'Ошибка регистрации пользователя | {e}')
+        return await message.answer('Ошибка регистрации, попробуйте позже', reply_markup=get_back_keyboard())
+    await message.answer(RussianMessages().success_login.format(first_name=message.from_user.first_name), reply_markup=get_main_keyboard(True))
 
 async def auth_phone_handler(message: Message, state: FSMContext, data) -> None:
     await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
@@ -160,7 +165,7 @@ async def auth_email_handler(message: Message, state: FSMContext, data) -> None:
     email = message.text
     is_valid, email = is_valid_email(email)
     if not is_valid:
-        return await message.answer('Email введен неверно, попробуйте еще раз\n\n<i>Подсказка: example@example.com', reply_markup=get_cancel())
+        return await message.answer('Email введен неверно, попробуйте еще раз\n\n<i>Подсказка: example@example.com</i>', reply_markup=get_cancel())
     await state.update_data(email=email)
     await message.answer(RussianMessages().auth_email_stage2, reply_markup=get_cancel())
     await state.set_state('auth:email:password')
