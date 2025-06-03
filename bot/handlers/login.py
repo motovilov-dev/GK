@@ -55,7 +55,7 @@ async def main_login(call: CallbackQuery, state: FSMContext, data) -> None:
         await state.set_state('register:phone')
 
 async def reg_phone_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     phone = message.text
     is_valid, phone = is_valid_phone(phone)
     if not is_valid:
@@ -71,7 +71,7 @@ async def reg_phone_handler(message: Message, state: FSMContext, data) -> None:
     await state.set_state('register:sms_code')
 
 async def reg_sms_code_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     sms_code = message.text
     state_data = await state.get_data()
     phone = state_data.get('reg_phone')
@@ -88,21 +88,21 @@ async def reg_sms_code_handler(message: Message, state: FSMContext, data) -> Non
     await state.set_state('register:name')
 
 async def reg_name_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     name = message.text
     await state.update_data(reg_first_name=name)
     await message.answer(RussianMessages().reg_stage4, reply_markup=get_back_keyboard())
     await state.set_state('register:last_name')
 
 async def reg_last_name_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     last_name = message.text
     await state.update_data(reg_last_name=last_name)
     await message.answer(RussianMessages().reg_stage5, reply_markup=get_back_keyboard())
     await state.set_state('register:email')
 
 async def reg_email_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     email = message.text
     is_valid, email = is_valid_email(email)
     if not is_valid:
@@ -124,7 +124,7 @@ async def reg_email_handler(message: Message, state: FSMContext, data) -> None:
     await message.answer(RussianMessages().success_login.format(first_name=message.from_user.first_name), reply_markup=get_main_keyboard(True))
 
 async def auth_phone_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     phone = message.text
     is_valid, phone = is_valid_phone(phone)
     if not is_valid:
@@ -140,7 +140,7 @@ async def auth_phone_handler(message: Message, state: FSMContext, data) -> None:
     await state.set_state('auth:phone:sms_code')
 
 async def auth_sms_code_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     sms_code = message.text
     state_data = await state.get_data()
     phone = state_data.get('phone')

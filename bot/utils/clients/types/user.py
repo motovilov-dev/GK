@@ -37,16 +37,16 @@ class UserData(BaseModel):
     gazprom_id: Optional[str] = None
     aeroflot_id: Optional[str] = None
     card_id: str
-    referral_id: Optional[str] = None
-    external_id: Optional[str] = None
+    referral_id: Optional[Any] = None
+    external_id: Optional[Any] = None
     passes_amount: int
     first_name: str
     last_name: str
-    patronymic: Optional[str] = None
-    name_changed_at: Optional[datetime] = None
-    first_name_changed_at: Optional[datetime] = None
+    patronymic: Optional[Any] = None
+    name_changed_at: Optional[Any] = None
+    first_name_changed_at: Optional[Any] = None
     discount_card: DiscountCard
-    promo: Optional[str] = None
+    promo: Optional[Any] = None
     promo_services: List[PromoService]
     qr: str
     role: Role

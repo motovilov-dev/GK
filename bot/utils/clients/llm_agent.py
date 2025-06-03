@@ -26,7 +26,7 @@ class GoldenKeyAgent:
             if user_profile:
                 system_prompt = system_prompt.replace('--user_profile--', user_profile)
             if users_orders:
-                system_prompt = system_prompt.replace('--users_orders--', users_orders)
+                system_prompt = system_prompt.replace('--user_orders--', users_orders)
             if user_passes:
                 system_prompt = system_prompt.replace('--user_passes--', user_passes)
             if services:

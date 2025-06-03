@@ -119,6 +119,9 @@ def get_hall_carousel_keyboard(halls: List[Hall], current_index: int) -> InlineK
             InlineKeyboardButton(text="📝 Подробнее", callback_data=f"halls:details:{halls[current_index].gk_id}"),
         ],
         [
+            InlineKeyboardButton(text="💰Купить визит", callback_data=f"passes:main"),
+        ],
+        [
             InlineKeyboardButton(text="⬅️ Назад к городам", callback_data="halls:cities"),
         ]
     ]
@@ -236,11 +239,11 @@ def get_choose_banks(banks: list, call_prefix: str):
     keyboard = []
     for bank in banks:
         if bank == 'tinkoff_acquiring':
-            keyboard.append([InlineKeyboardButton(text='Оплата картой', callback_data=call_prefix+bank)])
+            keyboard.append([InlineKeyboardButton(text='💳 Оплата картой', callback_data=call_prefix+bank)])
         if bank == 'sber':
             keyboard.append([InlineKeyboardButton(text='Бонусы от СберСпасибо', callback_data=call_prefix+bank)])
         if bank == 'yandex-split':
-            keyboard.append([InlineKeyboardButton(text='Яндекс Пэй | Сразу или частями', callback_data=call_prefix+bank)])
+            keyboard.append([InlineKeyboardButton(text='🍔 Яндекс Пэй | Сразу или частями', callback_data=call_prefix+bank)])
     keyboard.append([InlineKeyboardButton(text='⬅️ Назад', callback_data='back')])
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 

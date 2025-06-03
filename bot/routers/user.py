@@ -336,19 +336,22 @@ async def handle_text(message: Message, state: FSMContext, **data) -> None:
             orders_txt = None
 
         passes = None
-        async with AsyncAPIClient(token=gk_user.token) as client:
-            passes_response = await client.get_passes()
-            passes = passes_response.data.passes
-        if passes:
-            passes = ''
-            for pass_ in passes:
-                passes += RussianMessages().sessions_main.format(
-            visitor=pass_.user_name,
-            start_time=pass_.start_time,
-            status='☑️ Выполнено' if pass_.status == 'left' else '⚠️ Ожидается',
-            created_at=pass_.created_at.strftime('%d.%m.%Y %H:%M'),
-            hall=pass_.hall.name
-        )
+        try:
+            async with AsyncAPIClient(token=gk_user.token) as client:
+                passes_response = await client.get_passes()
+                passes = passes_response.data.passes
+            if passes:
+                passes = ''
+                for pass_ in passes:
+                    passes += RussianMessages().sessions_main.format(
+                visitor=pass_.user_name,
+                start_time=pass_.start_time,
+                status='☑️ Выполнено' if pass_.status == 'left' else '⚠️ Ожидается',
+                created_at=pass_.created_at.strftime('%d.%m.%Y %H:%M'),
+                hall=pass_.hall.name
+            )
+        except Exception as e:
+            passes = None
 
         user_profile = RussianMessages().profile.format(
             tg_id=message.from_user.id,
