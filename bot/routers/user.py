@@ -319,7 +319,53 @@ async def handle_text(message: Message, state: FSMContext, **data) -> None:
 
 Авторизован в аккаунте Golden Key: {gk_auth}
 '''
-    result = agent.ask_question(message.text, user_info, str(message.from_user.id))
+    if gk_user:
+        try:
+            orders_txt = ''
+            async with AsyncAPIClient(token=gk_user.token) as client:
+                orders = await client.get_orders()
+            if orders.data:
+                for order in orders.data:
+                    orders_txt += RussianMessages().order.format(
+                        order_id=order.id,
+                        status='⏳Ожидает' if order.status == 'pending' else '✅Оплачен' if order.status == 'completed' else '💸В обработке' if order.status == 'processing' else '⚫️Отменен',
+                        passes_amount=order.quantity,
+                        amount=order.total
+                    )
+        except Exception as e:
+            orders_txt = None
+
+        passes = None
+        async with AsyncAPIClient(token=gk_user.token) as client:
+            passes_response = await client.get_passes()
+            passes = passes_response.data.passes
+        if passes:
+            passes = ''
+            for pass_ in passes:
+                passes += RussianMessages().sessions_main.format(
+            visitor=pass_.user_name,
+            start_time=pass_.start_time,
+            status='☑️ Выполнено' if pass_.status == 'left' else '⚠️ Ожидается',
+            created_at=pass_.created_at.strftime('%d.%m.%Y %H:%M'),
+            hall=pass_.hall.name
+        )
+
+        user_profile = RussianMessages().profile.format(
+            tg_id=message.from_user.id,
+            gk_id=gk_user.gk_user_id,
+            card_id=gk_user.card_id,
+            first_name=gk_user.first_name,
+            last_name=gk_user.last_name,
+            email=gk_user.email,
+            phone=gk_user.phone,
+            passes_amount=gk_user.passes_amount
+        )
+        user_orders = orders_txt
+        user_passes = passes
+        services = None
+
+    result = agent.ask_question(message.text, user_info, str(message.from_user.id), 
+                                user_passes, user_orders, services, user_profile)
     print(result)
     try:
         message_text = result.answer

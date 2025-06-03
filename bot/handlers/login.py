@@ -161,7 +161,7 @@ async def auth_sms_code_handler(message: Message, state: FSMContext, data) -> No
     
 
 async def auth_email_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     email = message.text
     is_valid, email = is_valid_email(email)
     if not is_valid:
@@ -171,16 +171,20 @@ async def auth_email_handler(message: Message, state: FSMContext, data) -> None:
     await state.set_state('auth:email:password')
 
 async def auth_password_handler(message: Message, state: FSMContext, data) -> None:
-    await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
+    # await message.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id-1)
     password = message.text
     await state.update_data(password=password)
     state_data = await state.get_data()
     await state.set_state(None)
-    result = await create_new_gk_user(
-        email=state_data.get('email'),
-        password=state_data.get('password'),
-        user=data.get('user')
-    )
+    try:
+        result = await create_new_gk_user(
+            email=state_data.get('email'),
+            password=state_data.get('password'),
+            user=data.get('user')
+        )
+    except Exception as e:
+        logger.error(e)
+        result = False
 
     if result is True:
         await message.answer(RussianMessages().success_login.format(first_name=message.from_user.first_name), reply_markup=get_main_keyboard(True))
