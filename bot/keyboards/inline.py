@@ -128,7 +128,7 @@ def get_hall_carousel_keyboard(halls: List[Hall], current_index: int) -> InlineK
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
-def get_services_carousel_keyboard(services: List[RewardItem], current_index: int, service_id: int) -> InlineKeyboardMarkup:
+def get_services_carousel_keyboard(services: List[RewardItem], current_index: int, service_id: int, target_text: str = 'обменять', target_callback: str = None) -> InlineKeyboardMarkup:
     """
     Создает инлайн-клавиатуру для карусели сервисов.
     
@@ -146,7 +146,7 @@ def get_services_carousel_keyboard(services: List[RewardItem], current_index: in
             InlineKeyboardButton(text="➡️", callback_data=f"services:next:{current_index}"),
         ],
         [
-            InlineKeyboardButton(text='Обменять', callback_data=f'services:spend:{service_id}')
+            InlineKeyboardButton(text=target_text, callback_data=f'services:spend:{service_id}' if not target_callback else target_callback),
         ],
         [
             InlineKeyboardButton(text="⬅️ Назад", callback_data="back"),
@@ -241,9 +241,9 @@ def get_choose_banks(banks: list, call_prefix: str):
         if bank == 'tinkoff_acquiring':
             keyboard.append([InlineKeyboardButton(text='💳 Оплата картой', callback_data=call_prefix+bank)])
         if bank == 'sber':
-            keyboard.append([InlineKeyboardButton(text='Бонусы от СберСпасибо', callback_data=call_prefix+bank)])
+            keyboard.append([InlineKeyboardButton(text='💚 Бонусы от СберСпасибо', callback_data=call_prefix+bank)])
         if bank == 'yandex-split':
-            keyboard.append([InlineKeyboardButton(text='🍔 Яндекс Пэй | Сразу или частями', callback_data=call_prefix+bank)])
+            keyboard.append([InlineKeyboardButton(text='Яндекс Пэй | Сразу или частями', callback_data=call_prefix+bank)])
     keyboard.append([InlineKeyboardButton(text='⬅️ Назад', callback_data='back')])
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -265,11 +265,18 @@ def back_profile():
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
-def back_from_profile():
-    keyboard = [
-        [InlineKeyboardButton(text='Мои промокоды', callback_data='promo')],
-        [InlineKeyboardButton(text='⬅️ Назад', callback_data='back')]
-    ]
+def back_from_profile(gk_user):
+    if gk_user.aeroflot_id:
+        keyboard = [
+            [InlineKeyboardButton(text='Добавить карту АэроФлот', callback_data='add_af_card')],
+            [InlineKeyboardButton(text='Мои промокоды', callback_data='promo')],
+            [InlineKeyboardButton(text='⬅️ Назад', callback_data='back')]
+        ]
+    else:
+        keyboard = [
+            [InlineKeyboardButton(text='Мои промокоды', callback_data='promo')],
+            [InlineKeyboardButton(text='⬅️ Назад', callback_data='back')]
+        ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 def get_cancel():

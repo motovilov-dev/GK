@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import URLInputFile
 from aiogram.enums import ParseMode
+from aiogram.filters import StateFilter
 from json import JSONDecodeError
 import json
 
@@ -130,8 +131,37 @@ async def cmd_services(callback: CallbackQuery, state: FSMContext, **data) -> No
             reply_markup=get_back_keyboard(),
         )
 
+@user_router.callback_query(F.data.contains('add_af_card'))
+async def cmd_af_card(callback: CallbackQuery, state: FSMContext, **data) -> None:
+    msg_text = 'Введите номер вашей карты:\n\n<i>Подсказка: 0000 0000 0000 0000'
+    await state.set_state('add_af_card')
+    await callback.message.edit_text(text=msg_text, reply_markup=get_back_keyboard())
+
+@user_router.message(StateFilter('add_af_card'))
+async def msg_cmd_af_card(message: Message, state: FSMContext, **data) -> None:
+    user = data.get('user')
+    gk_user = data.get('gk_user')
+    card_id = message.text.replace(' ', '')
+    if len(card_id) != 16:
+        await message.answer('Номер карты должен состоять из 16 цифр', reply_markup=get_back_keyboard())
+        return
+    if not card_id.isdigit():
+        await message.answer('Номер карты должен состоять из цифр', reply_markup=get_back_keyboard())
+        return
+    async with AsyncAPIClient(token=gk_user.token) as client:
+        try:
+            await client.add_af_card(int(card_id))
+        except Exception as e:
+            logger.warning('Ошибка добавления карты AF | ', e)
+            await message.answer('Не удалось добавить данные карты, проверьте корректность номера карты', reply_markup=get_back_keyboard())
+        else:
+            await message.answer('Карта успешно добавлена!', reply_markup=get_back_keyboard())
+        
+
+
+
 @user_router.callback_query(F.data.contains('profile'))
-async def cmd_profile(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_profile(callback: CallbackQuery, state: FSMContext, **data) -> None: 
     msg_text = 'Профиль'
     gk_user = data.get('gk_user')
     try:

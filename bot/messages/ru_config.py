@@ -43,6 +43,7 @@ class RussianMessages(BaseMessageModel):
 <code>🆔 TG ID:</code> <b>{tg_id}</b>
 <code>🔑 GK ID:</code> <b>{gk_id}</b>
 <code>💳 Card ID:</code> <b>{card_id}</b>
+<code>✈️ AeroFlot ID:</code> <b>{af_id}</b>
 
 ━━━━━━━━━━━━━━
 <i>✨ {first_name} {last_name}</i>

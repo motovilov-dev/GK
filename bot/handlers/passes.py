@@ -90,7 +90,8 @@ async def main_passes(call: CallbackQuery, state: FSMContext, data) -> None:
                 make_order = await client.make_order(
                     bank=bank, 
                     product_id=product_id, 
-                    email=gk_user.email
+                    email=gk_user.email,
+                    quantity=product.count
                 )
                 print(make_order)
             except Exception as e:

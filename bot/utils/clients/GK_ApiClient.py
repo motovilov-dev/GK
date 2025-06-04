@@ -189,7 +189,7 @@ class AsyncAPIClient:
                          installments:bool = False, 
                          mobile:bool = False,
                          promocode:str = '',
-                         pay_by_act: str = False
+                         pay_by_act: bool = False
                          ) -> Any:
         """POST запрос"""
         result = await self._request(
@@ -282,6 +282,16 @@ class AsyncAPIClient:
             headers={'Authorization': f'Bearer {self.token}'}
         )
         return PromoResponse(**result)
+    
+    async def add_af_card(self, card_number: int):
+        """POST запрос"""
+        result = await self._request(
+            'POST',
+            '/api/cabinet/card-af',
+            headers={'Authorization': f'Bearer {self.token}'},
+            json={'card': card_number}
+        )
+        return result
 
 
 # Пример использования
