@@ -6190,3 +6190,105 @@ data.9.bank
 2025-06-04 14:29:17 | INFO | ⬇️ Incoming update | Type: callback_query
 2025-06-04 14:29:17 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:1
 2025-06-04 14:29:18 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:45:55 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:45:55 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Привет
+2025-06-04 14:45:59 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:46:27 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:46:27 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: halls:cities
+2025-06-04 14:46:28 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:46:29 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:46:29 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 14:46:30 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:47:52 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:47:52 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес-зал Домодедово
+2025-06-04 14:47:57 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:49:22 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:49:22 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес-зал Домодедово
+2025-06-04 14:49:27 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:51:40 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:51:40 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес-зал Домодедово
+2025-06-04 14:51:46 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:54:51 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:54:51 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес-зал Шереметьево
+2025-06-04 14:54:55 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:58:24 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:58:24 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: "Шереметьево" Внутренний вылет "Кандинский"
+2025-06-04 14:58:29 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:58:51 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:58:51 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес зал Павлецкий
+2025-06-04 14:58:54 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:00:12 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:00:12 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес зал Внуково
+2025-06-04 15:00:17 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:00:37 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:00:37 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес зал питер
+2025-06-04 15:00:41 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:00:52 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 15:00:52 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: halls:details:1:4
+2025-06-04 15:00:54 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 15:00:56 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 15:00:56 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 15:00:58 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 15:01:40 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:01:40 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес залы в Москве
+2025-06-04 15:01:48 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:04:27 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:04:27 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес залы в Москве
+2025-06-04 15:05:03 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:06:16 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:06:16 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Бизнес зал Павлецкий
+2025-06-04 15:06:25 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:07:25 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:07:25 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: покажи qr
+2025-06-04 15:07:38 | INFO | Ошибка при проверке пользователя gk: 'NoneType' object is not iterable
+2025-06-04 15:07:46 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:07:50 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 15:07:50 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: qr
+2025-06-04 15:07:51 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 15:07:52 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 15:07:52 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 15:07:54 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 15:19:12 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:19:12 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Доступный зал в Москве | Павелецкий
+2025-06-04 15:19:19 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:19:32 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:19:32 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Как пройти в зал Павелецкий ?
+2025-06-04 15:19:42 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:27:25 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:27:25 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: До скольки работают залы в Москве?
+2025-06-04 15:27:35 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:28:28 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:28:28 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: До скольки работает зал в московском вокзале ?
+2025-06-04 15:28:35 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:31:31 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:31:31 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Как попасть в зал Кандинский ?
+2025-06-04 15:31:36 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:32:56 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:32:56 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: В какой бизнес зал я могу купить визит ?
+2025-06-04 15:33:06 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:33:29 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:33:29 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Что такое GK?
+2025-06-04 15:33:33 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:33:45 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 15:33:45 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: halls:cities
+2025-06-04 15:33:47 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 15:33:48 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 15:33:48 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 15:33:50 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 15:43:05 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:43:05 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Привет
+2025-06-04 15:43:22 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:43:33 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:43:33 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Что такое GK?
+2025-06-04 15:43:41 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:43:52 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:43:52 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Как купить визит ?
+2025-06-04 15:44:05 | INFO | Ошибка при проверке пользователя gk: 'NoneType' object is not iterable
+2025-06-04 15:44:10 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:44:29 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:44:29 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: Как получить промокод?
+2025-06-04 15:44:39 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 15:45:04 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 15:45:04 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: А в боте?
+2025-06-04 15:45:17 | INFO | Ошибка при проверке пользователя gk: 'NoneType' object is not iterable
+2025-06-04 15:45:29 | SUCCESS | ✅ Successfully processed message update
