@@ -67,7 +67,7 @@ class RussianMessages(BaseMessageModel):
 '''
     success_login: str = "<b>✅ Авторизация: Успешно!</b>\n\nПриветсвуем, {first_name}!\n\n<i>Выберите действие:</i>"
     sessions_main: str = '''
-<b>📅 Ваши Проходы</b>
+<b>📅 Ваши визиты</b>
 
 <b>Посетитель:</b> <code>{visitor}</code>
 <b>Время посещения:</b> <code>{start_time}</code>
@@ -76,7 +76,7 @@ class RussianMessages(BaseMessageModel):
 <b>Зал:</b> <code>{hall}</code>
 
 ━━━━━━━━━━━━━━
-<i>Проход создан <b>{created_at}</b></i>
+<i>Визит создан <b>{created_at}</b></i>
 ━━━━━━━━━━━━━━
 '''
     orders_main: str = '''
@@ -89,6 +89,7 @@ class RussianMessages(BaseMessageModel):
 <b>Визитов:</b> <code>{passes_amount}</code>
 ━━━━━━━━━━━━━━
 <b>Цена:</b> <code>{amount} руб.</code>
+<b>Создан:</b> <code>{created_at}</code>
 '''
     promo: str = '''
 <b>🎁 Промокоды</b>

@@ -17,7 +17,7 @@ async def main_sessions(call: CallbackQuery, state: FSMContext, data):
     passes = []
     async with AsyncAPIClient(token=gk_user.token) as client:
         passes_response = await client.get_passes()
-        passes = passes_response.data.passes
+        passes = sorted(passes_response.data.passes, key=lambda x: x.created_at, reverse=True)
 
     # Проверяем, что список passes не пустой
     if not passes:
@@ -27,7 +27,7 @@ async def main_sessions(call: CallbackQuery, state: FSMContext, data):
     if query == 'main':
         msg_text = RussianMessages().sessions_main.format(
             visitor=passes[0].user_name,
-            start_time=passes[0].start_time,
+            start_time=passes[0].start_time if passes[0].start_time else 'Неизвестно',
             status='☑️ Выполнено' if passes[0].status == 'left' else '⚠️ Ожидается',
             created_at=passes[0].created_at.strftime('%d.%m.%Y %H:%M'),
             hall=passes[0].hall.name

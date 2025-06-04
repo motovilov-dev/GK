@@ -6048,3 +6048,145 @@ data.9.bank
 2025-06-03 19:00:06 | SUCCESS | ✅ Successfully processed message update
 2025-06-03 19:00:19 | INFO | ⬇️ Incoming update | Type: message
 2025-06-03 19:00:19 | INFO | ✉️ Message | Chat ID: 811501735 | User ID: 811501735 | Text: 6395
+2025-06-04 13:46:31 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 13:46:31 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: /start
+2025-06-04 13:46:34 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 13:46:38 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 13:46:38 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: /start
+2025-06-04 13:46:39 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:08:51 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:08:51 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:main
+2025-06-04 14:08:53 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:10:50 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:10:50 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: /start
+2025-06-04 14:10:53 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:10:54 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:10:54 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:main
+2025-06-04 14:10:55 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:10:58 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:10:58 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:next:0
+2025-06-04 14:10:59 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:11:01 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:11:01 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:next:1
+2025-06-04 14:11:02 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:11:03 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:11:03 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:next:2
+2025-06-04 14:11:04 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:11:05 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:11:05 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:next:3
+2025-06-04 14:11:06 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:11:08 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:11:08 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:next:4
+2025-06-04 14:11:09 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:11:10 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:11:10 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: services:next:5
+2025-06-04 14:11:11 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:11:13 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:11:13 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 14:11:14 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:18:25 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:18:25 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: /start
+2025-06-04 14:18:28 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:18:30 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:18:30 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: orders
+2025-06-04 14:18:32 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:19:32 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:19:32 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 14:19:35 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:19:37 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:19:37 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: orders
+2025-06-04 14:19:38 | ERROR | Ошибка выдачи заказов | 'NoneType' object is not iterable
+2025-06-04 14:19:39 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:20:06 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:20:06 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: /start
+2025-06-04 14:20:09 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:20:12 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:20:12 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: orders
+2025-06-04 14:20:13 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:24:21 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:24:21 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 14:24:24 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:24:27 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:24:27 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:main
+2025-06-04 14:24:28 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:24:30 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:24:30 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:main
+2025-06-04 14:24:31 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:24:32 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:24:32 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:auth
+2025-06-04 14:24:33 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:24:34 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:24:34 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:auth_email
+2025-06-04 14:24:34 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:25:03 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:25:03 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: assiaariesn1@yandex.ru
+2025-06-04 14:25:04 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:25:14 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:25:14 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: 00000000
+2025-06-04 14:25:15 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:25:19 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:25:19 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:auth
+2025-06-04 14:25:20 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:25:21 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:25:21 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:auth_email
+2025-06-04 14:25:21 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:25:40 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:25:40 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: assiaariesn1@yandex.ru
+2025-06-04 14:25:40 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:26:00 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:26:00 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: 00000000
+2025-06-04 14:26:02 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:26:27 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:26:27 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:auth
+2025-06-04 14:26:27 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:26:28 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:26:28 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: login:auth_email
+2025-06-04 14:26:29 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:26:37 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:26:37 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: assiaariesn1@yandex.ru
+2025-06-04 14:26:39 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:26:41 | INFO | ⬇️ Incoming update | Type: message
+2025-06-04 14:26:41 | INFO | ✉️ Message | Chat ID: 843774957 | User ID: 843774957 | Text: 00000000
+2025-06-04 14:26:43 | SUCCESS | ✅ Successfully processed message update
+2025-06-04 14:26:45 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:26:45 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:main
+2025-06-04 14:26:47 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:26:52 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:26:52 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:0
+2025-06-04 14:26:53 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:26:54 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:26:54 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:1
+2025-06-04 14:26:56 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:26:57 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:26:57 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:2
+2025-06-04 14:26:58 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:27:00 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:27:00 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:3
+2025-06-04 14:27:01 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:27:02 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:27:02 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:4
+2025-06-04 14:27:03 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:27:04 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:27:04 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:5
+2025-06-04 14:27:05 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:27:06 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:27:06 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:6
+2025-06-04 14:27:07 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:27:08 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:27:08 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:7
+2025-06-04 14:27:09 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:27:12 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:27:12 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:8
+2025-06-04 14:27:14 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:29:05 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:29:05 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: back
+2025-06-04 14:29:08 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:29:10 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:29:10 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:main
+2025-06-04 14:29:11 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:29:14 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:29:14 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:0
+2025-06-04 14:29:16 | SUCCESS | ✅ Successfully processed callback_query update
+2025-06-04 14:29:17 | INFO | ⬇️ Incoming update | Type: callback_query
+2025-06-04 14:29:17 | INFO | 🖱 Callback | Chat ID: 843774957 | User ID: 843774957 | Data: sessions:next:1
+2025-06-04 14:29:18 | SUCCESS | ✅ Successfully processed callback_query update

@@ -35,7 +35,7 @@ sentry_sdk.init(
 
 # Инициализация бота и диспетчера
 storage = MemoryStorage()
-bot = Bot(token=config.token, default=DefaultBotProperties(parse_mode='HTML'))
+bot = Bot(token=config.dev_token, default=DefaultBotProperties(parse_mode='HTML'))
 dp = Dispatcher(storage=storage)
 
 # Подключение middleware
@@ -112,6 +112,7 @@ async def start_bot_polling() -> None:
     sentry_logger.info("Запуск бота в режиме polling")
     
     await bot.delete_webhook(drop_pending_updates=True)
+    await bot.send_message(chat_id=843774957, text='Ready to work')
     await dp.start_polling(
         bot,
         allowed_updates=dp.resolve_used_update_types()
