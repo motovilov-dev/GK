@@ -369,7 +369,7 @@ async def handle_text(message: Message, state: FSMContext, **data) -> None:
         user_passes = passes
         services = None
 
-    result = agent.ask_question(message.text, user_info, str(message.from_user.id), user_passes, user_orders, services, user_profile)
+    result = agent.ask_question(message.text, user_info, user_profile, user_orders, user_passes, services)
     print(result)
     try:
         message_text = result.answer
