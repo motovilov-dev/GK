@@ -1,74 +1,99 @@
 from pydantic import BaseModel
 from openai import OpenAI
+from typing import Dict, Deque
+from collections import deque
+import hashlib
+import json
 
 class Result(BaseModel):
-            class Button(BaseModel):
-                callback_data: str
-                text: str
+    class Button(BaseModel):
+        callback_data: str
+        text: str
 
-            answer: str
-            buttons: list[Button]
+    answer: str
+    buttons: list[Button]
 
 class GoldenKeyAgent:
     def __init__(self):
-        pass
+        self.chat_histories: Dict[str, Deque[dict]] = {}
+        self.max_history = 2  # храним 2 последних сообщения
+
+    def _get_chat_id(self, user_info: dict) -> str:
+        """Генерирует уникальный chat_id на основе user_info"""
+        # Сортируем словарь для стабильности и преобразуем в JSON строку
+        sorted_info = json.dumps(user_info, sort_keys=True)
+        # Создаем хеш SHA256 (можно использовать и более простой хеш)
+        return hashlib.sha256(sorted_info.encode()).hexdigest()
+
+    def _update_chat_history(self, chat_id: str, role: str, content: str):
+        """Обновляет историю чата"""
+        if chat_id not in self.chat_histories:
+            self.chat_histories[chat_id] = deque(maxlen=self.max_history)
+        self.chat_histories[chat_id].append({"role": role, "content": content})
 
     def get_system_prompt(self, 
-                          user_info: dict,
-                          user_profile: str = None,
-                          users_orders: str = None,
-                          user_passes: str = None,
-                          services: str = None,
-                          ) -> str:
-        """Генерация системного промпта с информацией о пользователе и текущем времени"""
+                         user_info: dict,
+                         user_profile: str = None,
+                         users_orders: str = None,
+                         user_passes: str = None,
+                         services: str = None) -> str:
+        """Генерация системного промпта"""
         with open('system_prompt.md', 'r') as file:
             system_prompt = file.read()
-            if user_profile:
-                system_prompt = system_prompt.replace('--user_profile--', user_profile)
-            if users_orders:
-                system_prompt = system_prompt.replace('--user_orders--', users_orders)
-            if user_passes:
-                system_prompt = system_prompt.replace('--user_passes--', user_passes)
-            if services:
-                system_prompt = system_prompt.replace('--services--', services)
+            replacements = {
+                '--user_profile--': user_profile,
+                '--user_orders--': users_orders,
+                '--user_passes--': user_passes,
+                '--services--': services
+            }
+            for placeholder, value in replacements.items():
+                if value:
+                    system_prompt = system_prompt.replace(placeholder, value)
         return system_prompt.replace('--user_info--', str(user_info))
 
-    def ask_question(self, question: str, user_info: dict, chat_id: str, user_profile, users_orders, user_passes, services) -> Result | None:
-        """
-        Задает вопрос агенту и возвращает ответ
+    def ask_question(self, 
+                    question: str, 
+                    user_info: dict, 
+                    user_profile: str = None,
+                    users_orders: str = None,
+                    user_passes: str = None,
+                    services: str = None) -> Result | None:
+        """Основной метод для вопросов к агенту"""
+        # Генерируем chat_id из user_info
+        chat_id = self._get_chat_id(user_info)
         
-        Args:
-            question: Вопрос пользователя
-            user_info: Словарь с информацией о пользователе
-            chat_id: Идентификатор чата для хранения истории
-            
-        Returns:
-            Ответ агента в виде строки
-        """
-        # Инициализация хранилища чата и памяти
-        system_prompt = self.get_system_prompt(user_info, user_profile, users_orders, user_passes, services)
+        system_prompt = self.get_system_prompt(
+            user_info, user_profile, users_orders, user_passes, services
+        )
 
         client = OpenAI(
             api_key='sk-aitunnel-C0Wxd5TZVf96WJwjJHLBWZKcM4SE2URI',
             base_url="https://api.aitunnel.ru/v1/"
         )
 
-        # MODEL = "gpt-4.1-nano"
         MODEL = "deepseek-chat"
 
+        # Формируем список сообщений
+        messages = [{"role": "system", "content": system_prompt}]
+        
+        # Добавляем историю чата, если есть
+        if chat_id in self.chat_histories:
+            messages.extend(self.chat_histories[chat_id])
+        
+        # Добавляем текущий вопрос
+        messages.append({"role": "user", "content": question})
+
         completion = client.beta.chat.completions.parse(
-                    temperature=0.8,
-                    model=MODEL,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": question},
-                    ],
-                    response_format=Result
-                )
-                
+            temperature=0.8,
+            model=MODEL,
+            messages=messages,
+            response_format=Result
+        )
+        
         response = completion.choices[0].message
+        
+        # Обновляем историю чата
+        self._update_chat_history(chat_id, "user", question)
+        self._update_chat_history(chat_id, "assistant", response.parsed.answer)
+        
         return response.parsed
-
-
-
-     
