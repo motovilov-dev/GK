@@ -10,3 +10,4 @@ wheels/
 .venv
 
 llm_bot_api/*
+bot/bot.log
