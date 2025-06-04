@@ -31,9 +31,9 @@ class GoldenKeyAgent:
                 system_prompt = system_prompt.replace('--user_passes--', user_passes)
             if services:
                 system_prompt = system_prompt.replace('--services--', services)
-        return system_prompt.replace('--user_info--', user_info)
+        return system_prompt.replace('--user_info--', str(user_info))
 
-    def ask_question(self, question: str, user_info: dict, chat_id: str, user_profile, users_orders, user_passes, services) -> Result:
+    def ask_question(self, question: str, user_info: dict, chat_id: str, user_profile, users_orders, user_passes, services) -> Result | None:
         """
         Задает вопрос агенту и возвращает ответ
         
@@ -53,7 +53,8 @@ class GoldenKeyAgent:
             base_url="https://api.aitunnel.ru/v1/"
         )
 
-        MODEL = "gpt-4.1-nano"
+        # MODEL = "gpt-4.1-nano"
+        MODEL = "deepseek-chat"
 
         completion = client.beta.chat.completions.parse(
                     temperature=0.8,
