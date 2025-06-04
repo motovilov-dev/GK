@@ -164,7 +164,7 @@ class AsyncAPIClient:
         )
         return RewardResponse(**result)
 
-    async def get_passes(self, limit: int = 30, offset: int = 0, **kwargs) -> Any:
+    async def get_passes(self, limit: int = 30, offset: int = 0, **kwargs) -> PassesResponse:
         """GET запрос"""
         result = await self._request(
             'GET',

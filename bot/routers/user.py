@@ -118,7 +118,7 @@ async def cmd_passes(callback: CallbackQuery, state: FSMContext, **data) -> None
         )
 
 @user_router.callback_query(F.data.contains('services'))
-async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_services(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Дополнительные услуги'
     try:
         await main_services(call=callback, state=state, data=data)
@@ -131,7 +131,7 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
         )
 
 @user_router.callback_query(F.data.contains('profile'))
-async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_profile(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Профиль'
     gk_user = data.get('gk_user')
     try:
@@ -179,7 +179,7 @@ async def cmd_promo(call: CallbackQuery, state: FSMContext, **data):
 
 
 @user_router.callback_query(F.data.contains('qr'))
-async def cmd_halls(call: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_qr(call: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Код'
     gk_user = data.get('gk_user')
     if not gk_user:
@@ -206,7 +206,7 @@ async def cmd_halls(call: CallbackQuery, state: FSMContext, **data) -> None:
         )
 
 @user_router.callback_query(F.data.contains('orders'))
-async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_orders(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Заказы'
     gk_user = data.get('gk_user')
     try:
@@ -214,13 +214,15 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
         async with AsyncAPIClient(token=gk_user.token) as client:
             orders = await client.get_orders()
             if not orders.data:
-                return await callback.answer('У вас пока нет заказов', show_alert=True)
-        for order in orders.data:
+                await callback.answer('У вас пока нет заказов', show_alert=True)
+                return
+        for order in sorted(orders.data, key=lambda order: order.created_at, reverse=True):
             orders_txt += RussianMessages().order.format(
                 order_id=order.id,
                 status='⏳Ожидает' if order.status == 'pending' else '✅Оплачен' if order.status == 'completed' else '💸В обработке' if order.status == 'processing' else '⚫️Отменен',
                 passes_amount=order.quantity,
-                amount=order.total
+                amount=order.total,
+                created_at=order.created_at.strftime('%d.%m.%Y %H:%M') if order.created_at else 'Неизвестно'
             )
         await call_replace_answer(callback, RussianMessages().orders_main.format(orders=orders_txt), get_back_keyboard())
 
@@ -233,7 +235,7 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
         )
 
 @user_router.callback_query(F.data.contains('sessions'))
-async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_sessions(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Визиты'
     try:
         await main_sessions(callback, state, data)
@@ -246,7 +248,7 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
         )
 
 @user_router.callback_query(F.data.contains('login'))
-async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
+async def cmd_login(callback: CallbackQuery, state: FSMContext, **data) -> None:
     msg_text = 'Логин'
     try:
         await main_login(callback, state, data)
@@ -259,7 +261,7 @@ async def cmd_halls(callback: CallbackQuery, state: FSMContext, **data) -> None:
         )
 
 @user_router.callback_query(AuthStateFilter())
-async def auth_state(call: CallbackQuery, state: FSMContext, **data):
+async def call_auth_state(call: CallbackQuery, state: FSMContext, **data):
     await main_login(call, state, data)
 
 @user_router.message(RegStateFilter())
@@ -282,7 +284,7 @@ async def reg_state(message: Message, state: FSMContext, **data):
     
 
 @user_router.message(AuthStateFilter())
-async def auth_state(message: Message, state: FSMContext, **data):
+async def msg_auth_state(message: Message, state: FSMContext, **data):
     state_name = await state.get_state()
     try:
         auth_type = state_name.split(':')[1]
@@ -367,8 +369,7 @@ async def handle_text(message: Message, state: FSMContext, **data) -> None:
         user_passes = passes
         services = None
 
-    result = agent.ask_question(message.text, user_info, str(message.from_user.id), 
-                                user_passes, user_orders, services, user_profile)
+    result = agent.ask_question(message.text, user_info, str(message.from_user.id), user_passes, user_orders, services, user_profile)
     print(result)
     try:
         message_text = result.answer

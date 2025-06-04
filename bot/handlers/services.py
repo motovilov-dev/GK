@@ -20,7 +20,7 @@ async def main_services(call: CallbackQuery, state: FSMContext, data) -> None:
                 denomination=promo_services[0].denomination,
                 passes_amount=gk_user.passes_amount
             ),
-            reply_markup=get_services_carousel_keyboard(promo_services, promo_services[0].id, promo_services[0].id)
+            reply_markup=get_services_carousel_keyboard(promo_services, 0, promo_services[0].id)
         )
     elif query in ['next', 'prev']:
         if query == 'next':
