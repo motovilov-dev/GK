@@ -35,7 +35,7 @@ sentry_sdk.init(
 
 # Инициализация бота и диспетчера
 storage = MemoryStorage()
-bot = Bot(token=config.dev_token, default=DefaultBotProperties(parse_mode='HTML'))
+bot = Bot(token=config.token, default=DefaultBotProperties(parse_mode='HTML'))
 dp = Dispatcher(storage=storage)
 
 # Подключение middleware
