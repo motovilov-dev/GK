@@ -169,6 +169,7 @@ async def cmd_profile(callback: CallbackQuery, state: FSMContext, **data) -> Non
             tg_id=callback.from_user.id,
             gk_id=gk_user.gk_user_id,
             card_id=gk_user.card_id,
+            af_id=gk_user.aeroflot_id,
             first_name=gk_user.first_name,
             last_name=gk_user.last_name,
             email=gk_user.email,
